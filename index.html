@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Peripheral Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h1>🛒 Peripheral Shop</h1>
+
+  <div class="search-box">
+    <input id="q" placeholder="Пошук: клавіатура, мишка...">
+    <button id="btn">Пошук</button>
+  </div>
+
+  <div class="create-box">
+    <input id="newName" placeholder="Назва товару">
+    <button id="createBtn">Додати</button>
+  </div>
+
+  <div id="result" class="products"></div>
+</div>
+
+<script>
+const products = [
+  { name: "Logitech K120", type: "клавіатура", brand: "Logitech", price: 599 },
+  { name: "Razer BlackWidow", type: "клавіатура", brand: "Razer", price: 4599 },
+  { name: "Logitech G102", type: "мишка", brand: "Logitech", price: 999 },
+  { name: "Razer DeathAdder", type: "мишка", brand: "Razer", price: 2199 }
+];
+
+const qEl = document.getElementById("q");
+const btn = document.getElementById("btn");
+const result = document.getElementById("result");
+const createBtn = document.getElementById("createBtn");
+const newName = document.getElementById("newName");
+
+function show(list) {
+  if (!list.length) {
+    result.innerHTML = `<p class="empty">Нічого не знайдено</p>`;
+    return;
+  }
+  result.innerHTML = list.map(p => `
+    <div class="card">
+      <h3>${p.name}</h3>
+      <p>${p.brand}</p>
+      <span>${p.type}</span>
+      <b>${p.price} грн</b>
+    </div>
+  `).join("");
+}
+
+btn.onclick = () => {
+  const q = qEl.value.toLowerCase();
+  show(products.filter(p =>
+    p.name.toLowerCase().includes(q) || p.type.includes(q)
+  ));
+};
+
+createBtn.onclick = () => {
+  const name = newName.value.trim();
+  if (!name) return;
+
+  const newProduct = {
+    name,
+    type: "мишка",
+    brand: "Demo",
+    price: 100
+  };
+
+  products.push(newProduct);
+  newName.value = "";
+  show(products);
+};
+
+show(products);
+</script>
+
+</body>
+</html>
